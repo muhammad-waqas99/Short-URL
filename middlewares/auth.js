@@ -20,7 +20,7 @@ async function checkAuth(req, res, next) {
 
 
     const user = getUser(userUid);
-console.log("User from getUser:", user); 
+
     req.user = user;
     next();
 }
