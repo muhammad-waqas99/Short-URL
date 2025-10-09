@@ -1,31 +1,36 @@
-const {nanoid } =require("nanoid")
-const URL =require('../model/url')
+const { nanoid } = require("nanoid");
+const URL = require("../model/url");
 
 async function HandleGenerateNewShortURL(req, res) {
-    const body =req.body 
+  const body = req.body;
+  if (!body.url) {
+    return res.status(400).json({ Error: "URL is required" });
+  }
 
-    if(!body.url){
-        return res.status(400).json({Error : "url is required"})
-    }
-    const shortID = nanoid(8)
-    const URL =require("../model/url")
+  const shortID = nanoid(8);
 
-    await URL.create({
-        shortId:shortID,
-        redirectURL:body.url,
-        visitHistory:[]
-    })
+  await URL.create({
+    shortId: shortID,
+    redirectURL: body.url,
+    visitHistory: [],
+   createdBy: req.user._id,
+  });
+// console.log("User from middleware:", req.user);
 
-    return res.json({id:shortID})
+  return res.render('home', { id: shortID });
 }
 
 async function HandleGetAnalytics(req, res) {
-    const shortId =req.params.shortId;
-    const result = await URL.findOne({shortId})
+  const shortId = req.params.shortId;
+  const result = await URL.findOne({ shortId });
 
-    res.json({TotalClicks :result.visitHistory.length  , analytics :result.visitHistory})
+  res.json({
+    TotalClicks: result.visitHistory.length,
+    analytics: result.visitHistory,
+  });
 }
-module.exports={
-    HandleGenerateNewShortURL,
-    HandleGetAnalytics,
-}
+
+module.exports = {
+  HandleGenerateNewShortURL,
+  HandleGetAnalytics,
+};
