@@ -1,4 +1,7 @@
 const express =require("express")
+
+const dotenv =require('dotenv')
+dotenv.config()
 const path =require("path")
 const app =express()
 const connectToMongodb =require('./connect')
@@ -6,11 +9,12 @@ const urlRoute=require('./routes/url')
 const staticRouter =require('./routes/staticRouter')
 const userRoute =require('./routes/user')
 const URL =require('./model/url')
-const {restrictToLoggedInUser, checkAuth} = require('./middlewares/auth')
+const {checkForAuthentication,restrictTo} = require('./middlewares/auth')
 const cookieParser =require('cookie-parser')
-const PORT = 8001
+const PORT = process.env.PORT
 
-connectToMongodb("mongodb://localhost:27017/short-url")
+
+connectToMongodb(process.env.mongo_URI)
 
 
 app.set('view engine', 'ejs');
@@ -19,9 +23,10 @@ app.set('views', path.resolve(('./views')))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(cookieParser())
+app.use(checkForAuthentication)
 
-app.use("/url",restrictToLoggedInUser,urlRoute)
-app.use('/' ,checkAuth, staticRouter)
+app.use("/url",restrictTo(['NORMAL','ADMIN']),urlRoute)
+app.use('/' , staticRouter)
 app.use('/user' ,userRoute)
 
 
