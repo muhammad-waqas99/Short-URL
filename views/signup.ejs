@@ -1,25 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .signup-container {
+      background-color: #161b22;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #58a6ff;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      text-align: left;
+      font-size: 14px;
+      color: #8b949e;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #58a6ff;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      background-color: #238636;
+      color: white;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #2ea043;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #8b949e;
+    }
+
+    .login-link a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+        .alert {
+  background: #dc2626;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none; 
+  animation: fadeIn 0.5s ease-in-out;
+}
+  </style>
 </head>
 <body>
-  <h1>Signup</h1>
-  <div>
-  <form action="/user" method="POST">
-    <label>Enter Your Full Name </label>
-    <input type="text" name="name" >
-    
-        <label>Enter Your Email </label>
-    <input type="email" name="email" >
+  <div class="signup-container">
+    <h1>Signup</h1>
+      <% if (typeof error !== "undefined" && error) { %>
+    <div class="alert" id="alert"><%= error %></div>
+  <% } %>
 
-        <label>Enter Your Password </label>
-    <input type="password" name="password" >
+    <form action="/user" method="POST">
+      <label>Full Name</label>
+      <input type="text" name="name" required>
 
-    <button  type="submit">Signup</button>
-  </form>
-    </div>
+      <label>Email</label>
+      <input type="email" name="email" required>
+
+      <label>Password</label>
+      <input type="password" name="password" required>
+
+      <button type="submit">Signup</button>
+    </form>
+
+    <p class="login-link">Already have an account? <a href="/login">Login here</a></p>
+  </div>
 </body>
+<script>
+  const alertBox =document.getElementById('alert')
+  if(alertBox){
+    alertBox.style.display="block"
+    setTimeout(()=> alertBox.style.display = "none" ,4000)
+  }
+</script>
 </html>

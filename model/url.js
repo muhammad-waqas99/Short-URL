@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const validator =require('validator');
+const { validate } = require("./user");
 
 const urlSchema = new mongoose.Schema(
   {
@@ -9,7 +11,8 @@ const urlSchema = new mongoose.Schema(
     },
     redirectURL: {
       type: String,
-      required: true,
+      required: [true, 'URL is required'],
+      validate:[validator.isURL, "Enter the valid URL"]
     },
     visitHistory: [{ timestamp: { type: Number } }],
     
