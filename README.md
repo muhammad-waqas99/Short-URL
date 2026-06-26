@@ -135,7 +135,7 @@ PORT=8001
 ### Clone the repository
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
+git clone [<YOUR_REPOSITORY_URL>](https://github.com/muhammad-waqas99/Short-URL.git)
 cd urlshortner
 ```
 
