@@ -23,7 +23,6 @@
       padding: 2rem 1rem; 
     }
 
-  
     .navbar {
       width: 100%;
       max-width: 1000px;
@@ -143,7 +142,6 @@
       text-decoration: underline;
     }
 
-   
     .table-container {
       width: 100%;
       max-width: 900px;
@@ -187,7 +185,16 @@
       text-decoration: underline;
     }
 
- 
+
+    .original-url {
+      color: #a0aec0; 
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
     .alert {
       position: fixed;    
       top: 20px;        
@@ -202,7 +209,6 @@
       animation: fadeIn 0.5s ease-in-out;
     }
 
-    
     @media (max-width: 600px) {
       .navbar {
         flex-direction: column;
@@ -246,13 +252,13 @@
     </div>
   </div>
 
-  <h1> Generate Your Short URL</h1>
+  <h1>Generate Your Short URL</h1>
 
   <% if (locals.id) { %>
     <p>
       <strong>URL Generated:</strong><br>
-      <a href="http://localhost:8001/url/<%= id %>">
-        http://localhost:8001/url/<%= id %>
+      <a href="<%= locals.domain %>/url/<%= id %>" target="_blank">
+        <%= locals.domain %>/url/<%= id %>
       </a>
     </p>
   <% } %>
@@ -271,7 +277,7 @@
             <th>#</th>
             <th>Short ID</th>
             <th>Short URL</th>
-            <th>Redirect URL</th>
+            <th>Original URL</th>
             <th>Total Clicks</th>
           </tr>
         </thead>
@@ -280,8 +286,10 @@
             <tr>
               <td><%= index + 1 %></td>
               <td><%= url.shortId %></td>
-              <td><a href="http://localhost:8001/url/<%= url.shortId %>" target="_blank">http://localhost:8001/url/<%= url.shortId %></a></td>
-              <td><a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a></td>
+              <td><a href="<%= locals.domain %>/url/<%= url.shortId %>" target="_blank"><%= locals.domain %>/url/<%= url.shortId %></a></td>
+              
+              <td><span class="original-url" title="<%= url.redirectURL %>"><%= url.redirectURL %></span></td>
+              
               <td><%= url.visitHistory.length %></td>
             </tr>
           <% }) %>
