@@ -11,15 +11,23 @@ const userRoute =require('./routes/user')
 const URL =require('./model/url')
 const {checkForAuthentication,restrictTo} = require('./middlewares/auth')
 const cookieParser =require('cookie-parser')
-const PORT = process.env.PORT
-
+const PORT = process.env.PORT || 8001
+const dns = require('dns');
+dns.setServers(['1.1.1.1','8.8.8.8'])
 
 connectToMongodb(process.env.mongo_URI)
+.then(()=>{
+  console.log("MongoDB Connected")
+})
+.catch((err)=>{
+  console.log("MongoDB Error : ");
+  console.log(err)
+})
 
 
 app.set('view engine', 'ejs');
 app.set('views', path.resolve(('./views')))
-
+  
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(cookieParser())
