@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Signup</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #0d1117;
@@ -12,20 +18,23 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 1rem; 
     }
 
     .signup-container {
       background-color: #161b22;
-      padding: 40px;
+      padding: 40px 30px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      width: 350px;
+      width: 100%;
+      max-width: 350px; 
       text-align: center;
     }
 
     h1 {
+      margin-top: 0;
       margin-bottom: 20px;
       color: #58a6ff;
     }
@@ -40,9 +49,12 @@
       text-align: left;
       font-size: 14px;
       color: #8b949e;
+      margin-bottom: -10px; 
     }
 
-    input {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #30363d;
@@ -50,10 +62,42 @@
       color: #c9d1d9;
       outline: none;
       font-size: 14px;
+      width: 100%;
     }
 
     input:focus {
       border-color: #58a6ff;
+    }
+
+    .show-password-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: -5px; 
+      text-align: left;
+    }
+
+    .show-password-container input[type="checkbox"] {
+      accent-color: #58a6ff;
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      margin: 0;
+    }
+
+    .show-password-container label {
+      margin-bottom: 0;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .password-hint {
+      font-size: 12px;
+      color: #8b949e;
+      text-align: left;
+      margin-top: -10px;
+      line-height: 1.4;
     }
 
     button {
@@ -65,6 +109,7 @@
       font-size: 15px;
       cursor: pointer;
       transition: background 0.3s;
+      width: 100%;
     }
 
     button:hover {
@@ -85,33 +130,51 @@
     .login-link a:hover {
       text-decoration: underline;
     }
-        .alert {
-  background: #dc2626;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  display: none; 
-  animation: fadeIn 0.5s ease-in-out;
-}
+
+  
+    .alert {
+      background: #dc2626;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none; 
+      animation: fadeIn 0.5s ease-in-out;
+      font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <div class="signup-container">
     <h1>Signup</h1>
-      <% if (typeof error !== "undefined" && error) { %>
-    <div class="alert" id="alert"><%= error %></div>
-  <% } %>
+    
+    <% if (typeof error !== "undefined" && error) { %>
+      <div class="alert" id="alert"><%= error %></div>
+    <% } %>
 
     <form action="/user" method="POST">
-      <label>Full Name</label>
-      <input type="text" name="name" required>
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
 
-      <label>Email</label>
-      <input type="email" name="email" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
 
-      <label>Password</label>
-      <input type="password" name="password" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d).{8,}" title="Must contain at least one number and one letter, and at least 8 or more characters" required>
+
+      <div class="show-password-container">
+        <input type="checkbox" id="showPassword">
+        <label for="showPassword">Show Password</label>
+      </div>
+
+      <div class="password-hint">
+        Password must be at least 8 characters long and include at least one letter and one number.
+      </div>
 
       <button type="submit">Signup</button>
     </form>
@@ -120,10 +183,22 @@
   </div>
 </body>
 <script>
-  const alertBox =document.getElementById('alert')
+
+  const alertBox = document.getElementById('alert');
   if(alertBox){
-    alertBox.style.display="block"
-    setTimeout(()=> alertBox.style.display = "none" ,4000)
+    alertBox.style.display="block";
+    setTimeout(()=> alertBox.style.display = "none" ,4000);
   }
+
+  const togglePassword = document.getElementById('showPassword');
+  const passwordField = document.getElementById('password');
+
+  togglePassword.addEventListener('change', function() {
+    if (this.checked) {
+      passwordField.type = 'text'; 
+    } else {
+      passwordField.type = 'password'; 
+    }
+  });
 </script>
 </html>
